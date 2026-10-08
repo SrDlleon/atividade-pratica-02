@@ -15,19 +15,26 @@ with nova_sessao() as session:
     popular_banco(session)
 
     print("\nTodos os livros:")
-    listar_livros(session)
+    for livro in listar_livros(session):
+        print(
+            f'{livro["id"]} - {livro["titulo"]} | Autor: {livro["autor"]} | '
+            f'Disponivel: {livro["disponivel"]}'
+        )
 
     print("\nLivros disponíveis:")
-    listar_livros_disponiveis(session)
+    for livro in listar_livros_disponiveis(session):
+        print(f"{livro.id} - {livro.titulo}")
 
     print("\nBusca por parte do título:")
-    buscar_livros_por_titulo(session, "a")
+    for livro in buscar_livros_por_titulo(session, "a"):
+        print(f"{livro.id} - {livro.titulo}")
 
     print("\nLivros de um autor:")
-    listar_livros_por_autor(session, "Nome do Autor")
+    for livro in listar_livros_por_autor(session, "Machado de Assis"):
+        print(f"{livro.id} - {livro.titulo}")
 
     print("\nEmprestando um livro:")
-    emprestar_livro(session, "Título do Livro")
+    print(emprestar_livro(session, 1))
 
     print("\nDevolvendo um livro:")
-    devolver_livro(session, "Título do Livro")
+    print(devolver_livro(session, 2))

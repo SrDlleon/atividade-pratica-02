@@ -3,19 +3,31 @@ from sqlalchemy import select
 from models import Livro
 
 
-def emprestar_livro(session, titulo):
+def emprestar_livro(session, livro_id):
     """Marque um livro como indisponível."""
-    # TODO: busque o livro pelo título.
-    # TODO: se o livro não existir, exiba uma mensagem.
-    # TODO: se já estiver indisponível, exiba uma mensagem.
-    # TODO: se estiver disponível, altere disponivel para False e faça commit.
-    pass
+    livro = session.scalar(select(Livro).where(Livro.id == livro_id))
+
+    if livro is None:
+        return "Livro nao encontrado."
+
+    if not livro.disponivel:
+        return "Livro nao esta disponivel."
+
+    livro.disponivel = False
+    session.commit()
+    return "Livro emprestado com sucesso."
 
 
-def devolver_livro(session, titulo):
+def devolver_livro(session, livro_id):
     """Marque um livro como disponível."""
-    # TODO: busque o livro pelo título.
-    # TODO: se o livro não existir, exiba uma mensagem.
-    # TODO: se já estiver disponível, exiba uma mensagem.
-    # TODO: se estiver indisponível, altere disponivel para True e faça commit.
-    pass
+    livro = session.scalar(select(Livro).where(Livro.id == livro_id))
+
+    if livro is None:
+        return "Livro nao encontrado."
+
+    if livro.disponivel:
+        return "Livro ja esta disponivel."
+
+    livro.disponivel = True
+    session.commit()
+    return "Livro devolvido com sucesso."
